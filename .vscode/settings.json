@@ -1,0 +1,17 @@
+{
+  "files.eol": "\n",
+  "cSpell.words": [
+    "ientities",
+    "irepositories",
+    "typeorm",
+    "nestjs",
+  ],
+  "material-icon-theme.folders.associations": {
+    "application": "App",
+    "domain": "Controller",
+    "infrastructure": "Queue",
+    "sso": "admin",
+    "dictionary": "i18n",
+    "generic-operations":"other"
+  },
+}
