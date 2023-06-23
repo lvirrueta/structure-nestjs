@@ -1,19 +1,19 @@
 export class JsonResponse<T> {
-  public succeed: boolean;
-  public data: T;
-  public message: string;
-  public created: Date;
+  private succeed: boolean;
+  private data: T;
+  private message: string;
+  private created: Date;
 
   constructor(obj: IJsonResponse) {
     const { succeed, data, message } = obj;
-    this.succeed = succeed ? succeed : true;
+    this.succeed = succeed !== undefined ? succeed : true;
     this.created = new Date();
     this.message = message;
     this.data = data as T;
   }
 }
 
-interface IJsonResponse {
+export interface IJsonResponse {
   succeed?: boolean;
   data: unknown;
   message?: string;
