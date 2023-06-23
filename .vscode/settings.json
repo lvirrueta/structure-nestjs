@@ -10,6 +10,13 @@
     "application": "App",
     "domain": "Controller",
     "infrastructure": "Queue",
+    "irepositories": "contract",
+    "iservice": "contract",
+    "repositories": "container",
+    "entities": "class",
+    "swagger": "meta",
+    "enum": "constant",
+    "dto": "less",
     "sso": "admin",
     "dictionary": "i18n",
     "generic-operations":"other"
