@@ -17,7 +17,10 @@ import { TypeOrmModule } from '@nestjs/typeorm';
       port: +process.env.DB_PORT,
       autoLoadEntities: true,
       synchronize: true,
-      entities: [__dirname + '/../**/infrastructure/entities/*.entity.{js,ts}'],
+      entities: [
+        __dirname + '/../**/infrastructure/entities/*.entity.{js,ts}',
+        __dirname + '/../**/infrastructure/entities/**/*.entity.{js,ts}',
+      ],
       logging: 'all',
     }),
   ],
