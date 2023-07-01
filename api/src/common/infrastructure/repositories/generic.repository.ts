@@ -1,8 +1,9 @@
-import { Logger } from '@nestjs/common';
-import { Repository, DataSource, EntityTarget, QueryRunner } from 'typeorm';
+import { Logger, NotFoundException } from '@nestjs/common';
+import { Repository, DataSource, EntityTarget, QueryRunner, SelectQueryBuilder } from 'typeorm';
+
+import { ID } from 'src/common/application/types/types.types';
 import { Search } from 'src/common/application/dto/search.dto';
 import { IRepositoryOpt, IGenericRepository } from 'src/common/domain/irepositories/i-repository.repository.interface';
-import { ID } from 'src/common/application/types/types.types';
 
 export class GenericRepository<E> extends Repository<E> implements IGenericRepository {
   constructor(target: EntityTarget<E>, dataSource: DataSource) {
@@ -11,6 +12,7 @@ export class GenericRepository<E> extends Repository<E> implements IGenericRepos
 
   protected logger = new Logger(this.constructor.name);
 
+  /** list Entities  */
   public async listEntities(search?: Search, opt?: IRepositoryOpt): Promise<E[]> {
     const { queryRunner, relations, select, handleError } = { ...opt };
     const repository = this.getSimpleOrTransaction(queryRunner);
@@ -18,6 +20,7 @@ export class GenericRepository<E> extends Repository<E> implements IGenericRepos
     return await repository.find();
   }
 
+  /** list Entities And Count */
   public async listEntitiesAndCount(search?: Search, opt?: IRepositoryOpt): Promise<[E[], number]> {
     const { queryRunner, relations, select, handleError } = { ...opt };
     const repository = this.getSimpleOrTransaction(queryRunner);
@@ -25,6 +28,7 @@ export class GenericRepository<E> extends Repository<E> implements IGenericRepos
     return await repository.findAndCount();
   }
 
+  /** find One Entity */
   public async findOneEntity(id: ID, opt?: IRepositoryOpt): Promise<E> {
     const { queryRunner, relations, select, handleError } = { ...opt };
     const repository = this.getSimpleOrTransaction(queryRunner);
@@ -32,13 +36,22 @@ export class GenericRepository<E> extends Repository<E> implements IGenericRepos
     return await repository.findOne({ where: { id } as any });
   }
 
+  /** create One Entity */
   public async createEntity(entity, opt?: IRepositoryOpt): Promise<E> {
-    const { queryRunner, handleError } = { ...opt };
+    const { queryRunner, handleError = true } = { ...opt };
     const repository = this.getSimpleOrTransaction(queryRunner);
 
-    return await repository.save(entity);
+    try {
+      return await repository.save(entity);
+    } catch (error) {
+      if (!handleError) throw error;
+      this.catchExceptionsGeneric(error);
+      console.log(error);
+      throw error;
+    }
   }
 
+  /** create an array of entities */
   public async createEntities(entity: [], opt?: IRepositoryOpt): Promise<E[]> {
     const { queryRunner, handleError } = { ...opt };
     const repository = this.getSimpleOrTransaction(queryRunner);
@@ -46,13 +59,25 @@ export class GenericRepository<E> extends Repository<E> implements IGenericRepos
     throw new Error('Method not implemented.');
   }
 
+  /** update entity */
   public async updateEntity(entity, opt?: IRepositoryOpt): Promise<E> {
     const { queryRunner, handleError } = { ...opt };
     const repository = this.getSimpleOrTransaction(queryRunner);
 
-    return await repository.save(entity);
+    const entityF = await repository.findOne({ where: { id: entity['id'] } as any });
+    if (!entityF) throw new NotFoundException(`entity with id ${entity['id']} not found`);
+
+    try {
+      return await repository.save(entity);
+    } catch (error) {
+      if (!handleError) throw error;
+      this.catchExceptionsGeneric(error);
+      console.log(error);
+      throw error;
+    }
   }
 
+  /** update entities */
   public async updateEntities(entity: [], opt?: IRepositoryOpt): Promise<E[]> {
     const { queryRunner, handleError } = { ...opt };
     const repository = this.getSimpleOrTransaction(queryRunner);
@@ -60,23 +85,44 @@ export class GenericRepository<E> extends Repository<E> implements IGenericRepos
     return;
   }
 
+  /** delete entity */
   public async deleteEntity(id: ID, opt?: IRepositoryOpt): Promise<E> {
     const { queryRunner, handleError } = { ...opt };
     const repository = this.getSimpleOrTransaction(queryRunner);
 
-    const entity = await this.findOneEntity(id);
-    return await repository.remove(entity);
+    const entity = await repository.findOne({ where: { id } as any });
+    if (!entity) throw new NotFoundException(`entity with id ${id} not found`);
+
+    try {
+      return await repository.remove(entity);
+    } catch (error) {
+      if (!handleError) throw error;
+      this.catchExceptionsGeneric(error);
+      console.log(error);
+      throw error;
+    }
   }
 
+  /** soft delete entity */
   public async softDeleteEntity(id: ID, opt?: IRepositoryOpt): Promise<E> {
     const { queryRunner, handleError } = { ...opt };
     const repository = this.getSimpleOrTransaction(queryRunner);
 
-    const entity = await this.findOneEntity(id);
-    await repository.softDelete(id);
-    return entity;
+    const entity = await repository.findOne({ where: { id } as any });
+    if (!entity) throw new NotFoundException(`entity with id ${id} not found`);
+
+    try {
+      await repository.softDelete(id);
+      return entity;
+    } catch (error) {
+      if (!handleError) throw error;
+      this.catchExceptionsGeneric(error);
+      console.log(error);
+      throw error;
+    }
   }
 
+  /** create and start transaction */
   public async createAndStartTransaction(): Promise<QueryRunner> {
     const transaction = this.manager.connection.createQueryRunner();
     await transaction.connect();
@@ -85,20 +131,79 @@ export class GenericRepository<E> extends Repository<E> implements IGenericRepos
     return transaction;
   }
 
+  /** commit transaction */
   public async commitTransaction(query: QueryRunner): Promise<void> {
     return await query.commitTransaction();
   }
 
+  /** rollback transaction */
   public async rollbackTransaction(query: QueryRunner): Promise<void> {
     return await query.rollbackTransaction();
   }
 
+  /** release transaction */
   public async releaseTransaction(query: QueryRunner): Promise<void> {
     return await query.release();
+  }
+
+  /** create a query builder relations */
+  protected qbBuilderRelations(relationsObj: (object: E) => any, qb: SelectQueryBuilder<E>): SelectQueryBuilder<E> {
+    const alias = qb.alias;
+    const relationsSet = new Set<string>();
+    const relations = relationsObj.toString().split('=>')[1].replace(/\s/g, '').replace('[', '').replace(']', '').split(',');
+
+    relations.forEach((relationAlias) => {
+      const relation = relationAlias.split('.');
+      if (relation.length > 2) {
+        for (let i = 0; i < relation.length - 1; i++) {
+          const aliasR = i === 0 ? alias : relation[i];
+          relationsSet.add(`${aliasR}.${relation[i + 1]}`);
+        }
+      } else {
+        relationsSet.add(`${alias}.${relation[1]}`);
+      }
+    });
+
+    const relationsArr = Array.from(relationsSet);
+    relationsArr.forEach((r) => {
+      const [rel, ali] = r.split('.');
+      qb.leftJoinAndSelect(`${rel}.${ali}`, ali);
+    });
+
+    return qb;
   }
 
   /** get queryRunner repository or a simple repository */
   private getSimpleOrTransaction(query?: QueryRunner) {
     return query ? query.manager.getRepository(this.target) : this.manager.getRepository(this.target);
+  }
+
+  /** Catch Exceptions */
+  private catchExceptionsGeneric(error): void {
+    const code = error['code'];
+    const detail = error['detail'] as string;
+    const value = (detail?.split('=')[1] || '')?.match(/\(([^)]+)\)/);
+    switch (code) {
+      case '23503':
+        throw new NotFoundException({
+          message: `entity ${value[1]} not found`,
+        });
+        break;
+
+      case '23505':
+        throw new NotFoundException({
+          message: `value ${value[1]} already exists`,
+        });
+        break;
+
+      case '23502':
+        throw new NotFoundException({
+          message: `not null values`,
+        });
+        break;
+
+      default:
+        break;
+    }
   }
 }
