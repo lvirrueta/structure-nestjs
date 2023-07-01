@@ -27,11 +27,11 @@ export interface IRepositoryOpt<T = any> {
   /**
    * Indicates what relations of entity should be loaded (simplified left join form).
    */
-  relations: (keyof T)[];
+  relations?: (keyof T)[];
   /**
    * Specifies what columns should be retrieved.
    */
-  select: (keyof T)[];
+  select?: (keyof T)[];
   /**
    * flag to indicate if you want that generic repository handle errors
    */
