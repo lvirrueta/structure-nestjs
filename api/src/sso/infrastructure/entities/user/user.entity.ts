@@ -1,5 +1,5 @@
 import { UserTypeEnum } from 'src/sso/domain/enum/user.enum';
-import { IUser, User } from 'src/sso/domain/models/user/user.model';
+import { IUser } from 'src/sso/domain/models/user/user.model';
 import { Column, CreateDateColumn, Entity, PrimaryGeneratedColumn, TableInheritance, UpdateDateColumn } from 'typeorm';
 
 @Entity({ name: 'tblUsers' })
@@ -10,7 +10,7 @@ export class UserEntity implements IUser {
   @PrimaryGeneratedColumn('uuid', { name: 'User_uuid' })
   id: string;
 
-  @Column({ name: 'User_strUsername' })
+  @Column({ name: 'User_strUsername', unique: true })
   username: string;
 
   @Column({ name: 'User_strPassword' })
