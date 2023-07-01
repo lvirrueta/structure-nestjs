@@ -1,9 +1,17 @@
-import { Logger, NotFoundException } from '@nestjs/common';
+// Dependencies
+import { Logger } from '@nestjs/common';
 import { Repository, DataSource, EntityTarget, QueryRunner, SelectQueryBuilder } from 'typeorm';
 
+// Utils
+import { ThrowError } from 'src/utils/throwservererror';
+
+// Interface
 import { ID } from 'src/common/application/types/types.types';
 import { Search } from 'src/common/application/dto/search.dto';
 import { IRepositoryOpt, IGenericRepository } from 'src/common/domain/irepositories/i-repository.repository.interface';
+
+// Constants
+import { Errors } from 'src/common/application/errors/errors.constants';
 
 export class GenericRepository<E> extends Repository<E> implements IGenericRepository {
   constructor(target: EntityTarget<E>, dataSource: DataSource) {
@@ -65,7 +73,7 @@ export class GenericRepository<E> extends Repository<E> implements IGenericRepos
     const repository = this.getSimpleOrTransaction(queryRunner);
 
     const entityF = await repository.findOne({ where: { id: entity['id'] } as any });
-    if (!entityF) throw new NotFoundException(`entity with id ${entity['id']} not found`);
+    if (!entityF) ThrowError.httpException(Errors.GenericRepository.EntityNotFound, [entity['id']]);
 
     try {
       return await repository.save(entity);
@@ -91,7 +99,7 @@ export class GenericRepository<E> extends Repository<E> implements IGenericRepos
     const repository = this.getSimpleOrTransaction(queryRunner);
 
     const entity = await repository.findOne({ where: { id } as any });
-    if (!entity) throw new NotFoundException(`entity with id ${id} not found`);
+    if (!entity) ThrowError.httpException(Errors.GenericRepository.EntityNotFound, [entity['id']]);
 
     try {
       return await repository.remove(entity);
@@ -109,7 +117,7 @@ export class GenericRepository<E> extends Repository<E> implements IGenericRepos
     const repository = this.getSimpleOrTransaction(queryRunner);
 
     const entity = await repository.findOne({ where: { id } as any });
-    if (!entity) throw new NotFoundException(`entity with id ${id} not found`);
+    if (!entity) ThrowError.httpException(Errors.GenericRepository.EntityNotFound, [entity['id']]);
 
     try {
       await repository.softDelete(id);
@@ -185,22 +193,13 @@ export class GenericRepository<E> extends Repository<E> implements IGenericRepos
     const value = (detail?.split('=')[1] || '')?.match(/\(([^)]+)\)/);
     switch (code) {
       case '23503':
-        throw new NotFoundException({
-          message: `entity ${value[1]} not found`,
-        });
-        break;
+        ThrowError.httpException(Errors.GenericRepository.ConstraintError, [value[1]]);
 
       case '23505':
-        throw new NotFoundException({
-          message: `value ${value[1]} already exists`,
-        });
-        break;
+        ThrowError.httpException(Errors.GenericRepository.UniqueCodeError, [value[1]]);
 
       case '23502':
-        throw new NotFoundException({
-          message: `not null values`,
-        });
-        break;
+        ThrowError.httpException(Errors.GenericRepository.NotNullValues);
 
       default:
         break;
