@@ -12,6 +12,7 @@ import { UserEntity } from '../../entities/user/user.entity';
 export class UserBaseRepository<M extends User, I extends IUser> extends GenericRepository<M> implements IUserRepository<M, I> {
   public async findByUsername(username: string): Promise<M> {
     const qb = this.createQueryBuilder('user');
+    qb.select(['user.username', 'user.password']);
     return await qb.where('user.username = :username', { username }).getOne();
   }
 }

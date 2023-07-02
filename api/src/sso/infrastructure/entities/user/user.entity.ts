@@ -13,7 +13,7 @@ export class UserEntity implements IUser {
   @Column({ name: 'User_strUsername', unique: true })
   username: string;
 
-  @Column({ name: 'User_strPassword' })
+  @Column({ name: 'User_strPassword', select: false })
   password: string;
 
   @Column({ name: 'User_intHierarchy' })
