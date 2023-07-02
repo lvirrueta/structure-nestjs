@@ -36,4 +36,9 @@ export const Routes = {
     Update,
     Delete,
   },
+  SSOAuthLogin: {
+    ApiTags: `sso auth login`,
+    Controller: `sso-login`,
+    Login: 'login',
+  },
 };

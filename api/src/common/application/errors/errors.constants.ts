@@ -25,11 +25,11 @@ export const Errors = {
     },
   },
 
+  /** Auth Errors */
   Auth: {
-    PhoneE164: {
-      errorCode: `AUOT-0`,
-      friendlyMessage: `El numero registrado no es valido`,
-      message: `The number does not match the format E164`,
+    InvalidCredentials: {
+      errorCode: `AUIC-0`,
+      message: `Invalid Credentials`,
       httpStatus: HttpStatus.BAD_REQUEST,
     },
   },
