@@ -3,7 +3,7 @@ import { DataSource } from 'typeorm';
 import { Injectable } from '@nestjs/common';
 
 // Repository
-import { UserRepository } from './user.repository';
+import { UserBaseRepository } from './user.repository';
 
 // IRepository
 import { IUserCustomerRepository } from 'src/sso/domain/irepositories/user/i-user-customer.repository.interface';
@@ -15,7 +15,7 @@ import { UserCustomerEntity } from '../../entities/user/user-customer.entity';
 import { IUserCustomer, UserCustomer } from 'src/sso/domain/models/user/user-customer.model';
 
 @Injectable()
-export class UserCustomerRepository extends UserRepository<UserCustomer, IUserCustomer> implements IUserCustomerRepository {
+export class UserCustomerRepository extends UserBaseRepository<UserCustomer, IUserCustomer> implements IUserCustomerRepository {
   constructor(private readonly dataSource: DataSource) {
     super(UserCustomerEntity, dataSource);
   }
