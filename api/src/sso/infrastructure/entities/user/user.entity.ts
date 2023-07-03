@@ -1,6 +1,29 @@
-import { UserTypeEnum } from 'src/sso/domain/enum/user.enum';
+// Dependencies
+import {
+  Column,
+  Entity,
+  OneToOne,
+  JoinColumn,
+  CreateDateColumn,
+  TableInheritance,
+  UpdateDateColumn,
+  PrimaryGeneratedColumn,
+} from 'typeorm';
+
+// Entity
+import { UserInfoEntity } from '../user-info.entity';
+
+// Interface
+import { IUserInfo } from 'src/sso/domain/models/user-info.model';
+
+// Interface
 import { IUser } from 'src/sso/domain/models/user/user.model';
-import { Column, CreateDateColumn, Entity, PrimaryGeneratedColumn, TableInheritance, UpdateDateColumn } from 'typeorm';
+
+// Enum
+import { UserTypeEnum } from 'src/sso/domain/enum/user.enum';
+
+// Types
+import { ID } from 'src/common/application/types/types.types';
 
 @Entity({ name: 'tblUsers' })
 @TableInheritance({
@@ -8,7 +31,7 @@ import { Column, CreateDateColumn, Entity, PrimaryGeneratedColumn, TableInherita
 })
 export class UserEntity implements IUser {
   @PrimaryGeneratedColumn('uuid', { name: 'User_uuid' })
-  id: string;
+  id: ID;
 
   @Column({ name: 'User_strUsername', unique: true })
   username: string;
@@ -24,4 +47,11 @@ export class UserEntity implements IUser {
 
   @UpdateDateColumn({ name: 'User_dtmUpdatedAt' })
   updateAt: string;
+
+  @OneToOne(() => UserInfoEntity)
+  @JoinColumn({ name: 'UserInfo_uuid' })
+  userInfo: IUserInfo;
+
+  @Column({ name: 'UserInfo_uuid', nullable: true })
+  userInfoId: ID;
 }

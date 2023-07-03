@@ -1,14 +1,18 @@
 import { UserEntity } from 'src/sso/infrastructure/entities/user/user.entity';
+import { IUserInfo } from '../user-info.model';
+import { ID } from 'src/common/application/types/types.types';
 
 export interface IUser {
-  id: string;
+  id: ID;
   username: string;
   password: string;
   createdAt: string;
   updateAt: string;
   hierarchy: number;
   // TODO
-  // userInfo: IUserInfo;
+  userInfo: IUserInfo;
+  userInfoId: ID;
+
   // idUserInfo: string;
   // userGroup: IUserGroup;
   // idUserGroup: string;
