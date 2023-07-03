@@ -16,6 +16,7 @@ import { LoginDto } from '../dto/auth.dto';
 
 // Constants
 import { Routes } from 'src/common/application/routes/routes.constants';
+import { Public } from '../decorators/public.decorator';
 
 @ApiExtraModels(AccessTokenApi)
 @ApiTags(Routes.SSOAuthLogin.ApiTags)
@@ -23,6 +24,7 @@ import { Routes } from 'src/common/application/routes/routes.constants';
 export class AuthController {
   constructor(private readonly authService: AuthService) {}
 
+  @Public()
   @Post(Routes.SSOAuthLogin.Login)
   @ApiJsonResponse({ status: HttpStatus.OK, type: AccessTokenApi })
   async create(@Res() response: Response, @Body() dto: LoginDto): Promise<JsonResponse<AccessTokenApi>> {
