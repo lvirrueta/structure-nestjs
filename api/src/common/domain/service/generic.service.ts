@@ -4,8 +4,15 @@ import { IGenericService } from '../iservice/i-generic.service.interface';
 import { Search } from 'src/common/application/dto/search.dto';
 import { ID } from 'src/common/application/types/types.types';
 
+/**
+ * @param C CreateDto
+ * @param U UpdateDto
+ * @param M ModelEntity
+ * @param IR InterfaceRepository
+ */
 export class GenericService<C, U, E, IR extends IGenericRepository<E, Partial<E>>> implements IGenericService<C, U, E> {
   constructor(public readonly repository: IR) {}
+
   protected logger = new Logger(this.constructor.name);
 
   public async list(search?: Search): Promise<E[]> {
