@@ -6,4 +6,4 @@ import { IGenericRepository } from 'src/common/domain/irepositories/i-repository
  * @param E - Model Entity
  * @param IE - Interface Entity
  */
-export interface IUserInfoRepository extends IGenericRepository<UserInfo, IUserInfo> {}
+export interface IUserInfoRepository extends IGenericRepository<UserInfo, Partial<IUserInfo>> {}
