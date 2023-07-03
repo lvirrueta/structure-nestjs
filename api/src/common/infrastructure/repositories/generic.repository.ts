@@ -13,19 +13,23 @@ import { IRepositoryOpt, IGenericRepository } from 'src/common/domain/irepositor
 // Constants
 import { Errors } from 'src/common/application/errors/errors.constants';
 
-export class GenericRepository<E> extends Repository<E> implements IGenericRepository {
+export abstract class GenericRepository<E> extends Repository<E> implements IGenericRepository {
   constructor(target: EntityTarget<E>, dataSource: DataSource) {
     super(target, dataSource.createEntityManager());
   }
 
+  abstract relations(): (object: E) => any;
+
   protected logger = new Logger(this.constructor.name);
 
   /** list Entities  */
-  public async listEntities(search?: Search, opt?: IRepositoryOpt): Promise<E[]> {
-    const { queryRunner, relations, select, handleError } = { ...opt };
+  public async listEntities(search?: Search, opt?: IRepositoryOpt<E>): Promise<E[]> {
+    const { queryRunner, relations = this.relations(), select } = { ...opt };
     const repository = this.getSimpleOrTransaction(queryRunner);
 
-    return await repository.find();
+    let qb = repository.createQueryBuilder('alias');
+    qb = this.qbBuilderRelations(relations, qb);
+    return await qb.getMany();
   }
 
   /** list Entities And Count */
@@ -158,9 +162,11 @@ export class GenericRepository<E> extends Repository<E> implements IGenericRepos
   protected qbBuilderRelations(relationsObj: (object: E) => any, qb: SelectQueryBuilder<E>): SelectQueryBuilder<E> {
     const alias = qb.alias;
     const relationsSet = new Set<string>();
-    const relations = relationsObj.toString().split('=>')[1].replace(/\s/g, '').replace('[', '').replace(']', '').split(',');
+    const relations = relationsObj.toString().split('=>')[1].replace(/\s/g, '').replace('[', '').replace(']', '');
 
-    relations.forEach((relationAlias) => {
+    if (relations === '') return qb;
+
+    relations.split(',').forEach((relationAlias) => {
       const relation = relationAlias.split('.');
       if (relation.length > 2) {
         for (let i = 0; i < relation.length - 1; i++) {

@@ -27,7 +27,7 @@ export interface IRepositoryOpt<T = any> {
   /**
    * Indicates what relations of entity should be loaded (simplified left join form).
    */
-  relations?: (keyof T)[];
+  relations?: (object: T) => any;
   /**
    * Specifies what columns should be retrieved.
    */

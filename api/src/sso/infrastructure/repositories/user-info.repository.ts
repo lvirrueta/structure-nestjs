@@ -12,4 +12,8 @@ export class UserInfoRepository extends GenericRepository<UserInfo> implements I
   constructor(private readonly dataSource: DataSource) {
     super(UserInfoEntity, dataSource);
   }
+
+  relations(): (object: UserInfo) => any {
+    return () => [];
+  }
 }
