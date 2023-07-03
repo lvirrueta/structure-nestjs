@@ -30,7 +30,7 @@ export class CreateUserInfoDto implements IUserInfoOmit {
   @IsDateString()
   dateBirth: string;
 
-  @ApiProperty({ description: 'email of the user', example: '+524434405739' })
+  @ApiProperty({ description: 'phone of the user', example: '+524434405739' })
   @Matches(Regex.E164, { message: `phone needs the code area` })
   phone: string;
 }
