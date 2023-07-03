@@ -16,7 +16,7 @@ export class UserInfoEntity implements IUserInfo {
   @Column({ name: 'UserInfo_strMaternalName' })
   maternalName: string;
 
-  @Column({ name: 'UserInfo_strEmail' })
+  @Column({ name: 'UserInfo_strEmail', unique: true })
   email: string;
 
   @Column({ name: 'UserInfo_strPhone', unique: true })
