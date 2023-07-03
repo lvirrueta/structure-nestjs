@@ -40,5 +40,16 @@ export const Routes = {
     ApiTags: `sso auth login`,
     Controller: `sso-login`,
     Login: 'login',
+    SignUp: 'signup',
+  },
+  SSOInfo: {
+    ApiTags: `sso info`,
+    Controller: `sso-user-info`,
+    List,
+    Search,
+    Detail,
+    Create,
+    Update,
+    Delete,
   },
 };

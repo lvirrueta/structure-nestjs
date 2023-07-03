@@ -9,6 +9,7 @@ import { CommonModule } from 'src/common/common.module';
 
 // Controllers
 import { AuthController } from './application/controller/auth.controller';
+import { UserInfoController } from './application/controller/user-info.controller';
 import { UserAdminController } from './application/controller/user/user-admin.controller';
 import { UserCustomerController } from './application/controller/user/user-customer.controller';
 import { UserOperativeController } from './application/controller/user/user-operative.controller';
@@ -25,6 +26,8 @@ import { UserRepository } from './infrastructure/repositories/user/user.reposito
 import { UserAdminRepository } from './infrastructure/repositories/user/user-admin.repository';
 import { UserCustomerRepository } from './infrastructure/repositories/user/user-customer.repository';
 import { UserOperativeRepository } from './infrastructure/repositories/user/user-operative.repository';
+import { UserInfoService } from './domain/service/user-info.service';
+import { UserInfoRepository } from './infrastructure/repositories/user-info.repository';
 
 @Module({
   imports: [
@@ -43,17 +46,19 @@ import { UserOperativeRepository } from './infrastructure/repositories/user/user
       },
     }),
   ],
-  controllers: [UserAdminController, UserOperativeController, UserCustomerController, AuthController],
+  controllers: [UserAdminController, UserOperativeController, UserCustomerController, AuthController, UserInfoController],
   providers: [
     // Services
     JwtStrategy,
     AuthService,
+    UserInfoService,
     UserAdminService,
     UserCustomerService,
     UserOperativeService,
 
     // Repositories
     UserRepository,
+    UserInfoRepository,
     UserAdminRepository,
     UserCustomerRepository,
     UserOperativeRepository,
