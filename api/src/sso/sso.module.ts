@@ -46,7 +46,7 @@ import { UserInfoRepository } from './infrastructure/repositories/user-info.repo
       },
     }),
   ],
-  controllers: [UserAdminController, UserOperativeController, UserCustomerController, AuthController, UserInfoController],
+  controllers: [UserAdminController, UserOperativeController, UserCustomerController, UserInfoController, AuthController],
   providers: [
     // Services
     JwtStrategy,
