@@ -7,9 +7,13 @@ import { InjectRepository } from '@nestjs/typeorm';
 
 // Repository
 import { UserRepository } from 'src/sso/infrastructure/repositories/user/user.repository';
+import { UserInfoRepository } from 'src/sso/infrastructure/repositories/user-info.repository';
+import { UserCustomerRepository } from 'src/sso/infrastructure/repositories/user/user-customer.repository';
 
 // IRepository
 import { IUserRepository } from '../irepositories/user/i-user.repository.interface';
+import { IUserInfoRepository } from '../irepositories/user-info.repository.interface';
+import { IUserCustomerRepository } from '../irepositories/user/i-user-customer.repository.interface';
 
 // Interface
 import { IJwtPayload } from '../interface/i-jwt-payload';
@@ -19,7 +23,8 @@ import { IAccessToken } from '../interface/i-access-token';
 import { ID } from 'src/common/application/types/types.types';
 
 // DTO
-import { LoginDto } from 'src/sso/application/dto/auth.dto';
+import { LoginDto } from 'src/sso/application/dto/login.dto';
+import { SignupDto } from 'src/sso/application/dto/signup.dto';
 
 // Constants
 import { ThrowError } from 'src/utils/throwservererror';
@@ -30,6 +35,10 @@ export class AuthService {
   constructor(
     @InjectRepository(UserRepository)
     public readonly userRepository: IUserRepository,
+    @InjectRepository(UserCustomerRepository)
+    public readonly userCustomerRepository: IUserCustomerRepository,
+    @InjectRepository(UserInfoRepository)
+    public readonly userInfoRepository: IUserInfoRepository,
     private readonly jwtService: JwtService,
   ) {}
 
@@ -43,6 +52,25 @@ export class AuthService {
       return await this.generateJwtToken(user.id);
     } else {
       ThrowError.httpException(Errors.Auth.InvalidCredentials);
+    }
+  }
+
+  public async signup(dto: SignupDto): Promise<IAccessToken> {
+    const { username, password, ...rest } = dto;
+    const userInfoDto = { ...rest };
+
+    const queryRunner = await this.userInfoRepository.createAndStartTransaction();
+
+    try {
+      const userInfo = await this.userInfoRepository.createEntity(userInfoDto, { queryRunner });
+      const user = await this.userCustomerRepository.createEntity({ hierarchy: 10, password, username, userInfo }, { queryRunner });
+      await this.userRepository.commitTransaction(queryRunner);
+      return await this.generateJwtToken(user.id);
+    } catch (error) {
+      await this.userCustomerRepository.rollbackTransaction(queryRunner);
+      throw error;
+    } finally {
+      await this.userCustomerRepository.releaseTransaction(queryRunner);
     }
   }
 
