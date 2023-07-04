@@ -18,23 +18,4 @@ export class UserService<C extends CreateUserDto, U extends UpdateUserDto, E ext
   constructor(public readonly userRepository: IUserRepository<E, E>) {
     super(userRepository);
   }
-
-  public override async create(dto: C): Promise<E> {
-    dto.password = this.hashPassword(dto.password);
-    return await this.repository.createEntity(dto as any);
-  }
-
-  public override async update(dto: U): Promise<E> {
-    dto.password = this.hashPassword(dto.password);
-    return await this.repository.updateEntity(dto as any);
-  }
-
-  /** hash Password
-   * @param password
-   * @param saltRounds
-   */
-  private hashPassword(password: string, saltRounds = 10): string {
-    const salt = bcrypt.genSaltSync(saltRounds);
-    return bcrypt.hashSync(password, salt);
-  }
 }
