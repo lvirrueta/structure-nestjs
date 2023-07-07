@@ -2,8 +2,7 @@
 import * as bcrypt from 'bcrypt';
 import { v4 as uuidv4 } from 'uuid';
 import { JwtService } from '@nestjs/jwt';
-import { Injectable } from '@nestjs/common';
-import { InjectRepository } from '@nestjs/typeorm';
+import { Inject, Injectable } from '@nestjs/common';
 
 // Repository
 import { UserRepository } from 'src/sso/infrastructure/repositories/user/user.repository';
@@ -33,11 +32,11 @@ import { Errors } from 'src/common/application/errors/errors.constants';
 @Injectable()
 export class AuthService {
   constructor(
-    @InjectRepository(UserRepository)
+    @Inject(UserRepository)
     public readonly userRepository: IUserRepository,
-    @InjectRepository(UserCustomerRepository)
+    @Inject(UserCustomerRepository)
     public readonly userCustomerRepository: IUserCustomerRepository,
-    @InjectRepository(UserInfoRepository)
+    @Inject(UserInfoRepository)
     public readonly userInfoRepository: IUserInfoRepository,
     private readonly jwtService: JwtService,
   ) {}

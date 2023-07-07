@@ -14,7 +14,7 @@ import { IRepositoryOpt, IGenericRepository } from 'src/common/domain/irepositor
 import { Errors } from 'src/common/application/errors/errors.constants';
 
 export abstract class GenericRepository<E> extends Repository<E> implements IGenericRepository {
-  constructor(target: EntityTarget<E>, dataSource: DataSource) {
+  constructor(public target: EntityTarget<E>, public dataSource: DataSource) {
     super(target, dataSource.createEntityManager());
   }
 
@@ -136,7 +136,7 @@ export abstract class GenericRepository<E> extends Repository<E> implements IGen
 
   /** create and start transaction */
   public async createAndStartTransaction(): Promise<QueryRunner> {
-    const transaction = this.manager.connection.createQueryRunner();
+    const transaction = this.dataSource.createQueryRunner();
     await transaction.connect();
     await transaction.startTransaction();
 
@@ -189,7 +189,7 @@ export abstract class GenericRepository<E> extends Repository<E> implements IGen
 
   /** get queryRunner repository or a simple repository */
   private getSimpleOrTransaction(query?: QueryRunner) {
-    return query ? query.manager.getRepository(this.target) : this.manager.getRepository(this.target);
+    return query ? query.manager.getRepository(this.target) : this.dataSource.getRepository(this.target);
   }
 
   /** Catch Exceptions */

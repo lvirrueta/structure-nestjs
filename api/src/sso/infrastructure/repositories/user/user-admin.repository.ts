@@ -16,7 +16,7 @@ import { IUserAdmin, UserAdmin } from 'src/sso/domain/models/user/user-admin.mod
 
 @Injectable()
 export class UserAdminRepository extends UserBaseRepository<UserAdmin, IUserAdmin> implements IUserAdminRepository {
-  constructor(private readonly dataSource: DataSource) {
+  constructor(public readonly dataSource: DataSource) {
     super(UserAdminEntity, dataSource);
   }
   testAdmin(): IUserAdmin {

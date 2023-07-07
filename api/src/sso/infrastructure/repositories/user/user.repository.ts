@@ -53,7 +53,7 @@ export class UserBaseRepository<M extends User, I extends IUser> extends Generic
 
 @Injectable()
 export class UserRepository extends UserBaseRepository<User, IUser> implements IUserRepository {
-  constructor(private readonly dataSource: DataSource) {
+  constructor(public readonly dataSource: DataSource) {
     super(UserEntity, dataSource);
   }
 }

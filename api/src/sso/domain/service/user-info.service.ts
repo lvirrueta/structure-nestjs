@@ -1,6 +1,5 @@
 // Dependencies
-import { Injectable } from '@nestjs/common';
-import { InjectRepository } from '@nestjs/typeorm';
+import { Inject, Injectable } from '@nestjs/common';
 
 // Service
 import { GenericService } from 'src/common/domain/service/generic.service';
@@ -20,7 +19,7 @@ import { UpdateUserInfoDto } from 'src/sso/application/dto/update-user-info.dto'
 
 @Injectable()
 export class UserInfoService extends GenericService<CreateUserInfoDto, UpdateUserInfoDto, UserInfo, IUserInfoRepository> {
-  constructor(@InjectRepository(UserInfoRepository) public readonly userInfoRepository: IUserInfoRepository) {
+  constructor(@Inject(UserInfoRepository) public readonly userInfoRepository: IUserInfoRepository) {
     super(userInfoRepository);
   }
 }

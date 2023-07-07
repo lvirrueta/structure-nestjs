@@ -10,7 +10,7 @@ import { IRepositoryOpt } from 'src/common/domain/irepositories/i-repository.rep
 
 @Injectable()
 export class UserInfoRepository extends GenericRepository<UserInfo> implements IUserInfoRepository {
-  constructor(private readonly dataSource: DataSource) {
+  constructor(public readonly dataSource: DataSource) {
     super(UserInfoEntity, dataSource);
   }
 

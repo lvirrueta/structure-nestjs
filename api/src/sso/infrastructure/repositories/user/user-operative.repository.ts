@@ -16,7 +16,7 @@ import { IUserOperative, UserOperative } from 'src/sso/domain/models/user/user-o
 
 @Injectable()
 export class UserOperativeRepository extends UserBaseRepository<UserOperative, IUserOperative> implements IUserOperativeRepository {
-  constructor(private readonly dataSource: DataSource) {
+  constructor(public readonly dataSource: DataSource) {
     super(UserOperativeEntity, dataSource);
   }
 }

@@ -16,7 +16,7 @@ import { IUserCustomer, UserCustomer } from 'src/sso/domain/models/user/user-cus
 
 @Injectable()
 export class UserCustomerRepository extends UserBaseRepository<UserCustomer, IUserCustomer> implements IUserCustomerRepository {
-  constructor(private readonly dataSource: DataSource) {
+  constructor(public readonly dataSource: DataSource) {
     super(UserCustomerEntity, dataSource);
   }
 }
