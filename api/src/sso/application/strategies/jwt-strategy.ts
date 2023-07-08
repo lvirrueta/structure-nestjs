@@ -39,7 +39,7 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
     const { userID, jti } = payload;
 
     const user = await this.userRepository.findOneEntity(userID);
-    const token = await this.tokenRepository.findOneEntity(jti);
+    const token = await this.tokenRepository.findToken(jti);
 
     if (!user) {
       this.logger.error('valid token, but user does not exists on db');

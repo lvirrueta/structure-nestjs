@@ -88,7 +88,7 @@ export class AuthService {
     const accessToken = this.jwtService.sign(payload, { expiresIn: '1h' });
     const refreshToken = this.jwtService.sign({ jti: idToken }, { expiresIn: '90m' });
 
-    await this.tokenRepository.createEntity({ userID, id: idToken });
+    await this.tokenRepository.createToken({ userID, id: idToken });
 
     return {
       accessToken,

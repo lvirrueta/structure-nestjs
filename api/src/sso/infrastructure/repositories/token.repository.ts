@@ -12,7 +12,8 @@ import { ITokenRepository } from 'src/sso/domain/irepositories/token.repository.
 import { TokenEntity } from '../entities/token.entity';
 
 // Interface
-import { Token } from 'src/sso/domain/models/token.model';
+import { ID } from 'src/common/application/types/types.types';
+import { IToken, Token } from 'src/sso/domain/models/token.model';
 
 @Injectable()
 export class TokenRepository extends GenericRepository<Token> implements ITokenRepository {
@@ -22,5 +23,13 @@ export class TokenRepository extends GenericRepository<Token> implements ITokenR
 
   relations(): (object: Token) => any {
     return () => [];
+  }
+
+  public async createToken(dto: Partial<IToken>): Promise<Token> {
+    return await super.createEntity(dto);
+  }
+
+  public async findToken(id: ID): Promise<Token> {
+    return await super.findOneEntity(id);
   }
 }
