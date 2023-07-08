@@ -17,17 +17,18 @@ import { UserOperativeController } from './application/controller/user/user-oper
 // Services
 import { AuthService } from './domain/service/auth.service';
 import { JwtStrategy } from './application/strategies/jwt-strategy';
+import { UserInfoService } from './domain/service/user-info.service';
 import { UserAdminService } from './domain/service/user/user-admin.service';
 import { UserCustomerService } from './domain/service/user/user-customer.service';
 import { UserOperativeService } from './domain/service/user/user-operative.service';
 
 // Repositories
+import { TokenRepository } from './infrastructure/repositories/token.repository';
 import { UserRepository } from './infrastructure/repositories/user/user.repository';
+import { UserInfoRepository } from './infrastructure/repositories/user-info.repository';
 import { UserAdminRepository } from './infrastructure/repositories/user/user-admin.repository';
 import { UserCustomerRepository } from './infrastructure/repositories/user/user-customer.repository';
 import { UserOperativeRepository } from './infrastructure/repositories/user/user-operative.repository';
-import { UserInfoService } from './domain/service/user-info.service';
-import { UserInfoRepository } from './infrastructure/repositories/user-info.repository';
 
 @Module({
   imports: [
@@ -58,6 +59,7 @@ import { UserInfoRepository } from './infrastructure/repositories/user-info.repo
 
     // Repositories
     UserRepository,
+    TokenRepository,
     UserInfoRepository,
     UserAdminRepository,
     UserCustomerRepository,

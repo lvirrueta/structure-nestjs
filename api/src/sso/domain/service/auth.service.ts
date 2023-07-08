@@ -5,11 +5,13 @@ import { JwtService } from '@nestjs/jwt';
 import { Inject, Injectable } from '@nestjs/common';
 
 // Repository
+import { TokenRepository } from 'src/sso/infrastructure/repositories/token.repository';
 import { UserRepository } from 'src/sso/infrastructure/repositories/user/user.repository';
 import { UserInfoRepository } from 'src/sso/infrastructure/repositories/user-info.repository';
 import { UserCustomerRepository } from 'src/sso/infrastructure/repositories/user/user-customer.repository';
 
 // IRepository
+import { ITokenRepository } from '../irepositories/token.repository.interface';
 import { IUserRepository } from '../irepositories/user/i-user.repository.interface';
 import { IUserInfoRepository } from '../irepositories/user-info.repository.interface';
 import { IUserCustomerRepository } from '../irepositories/user/i-user-customer.repository.interface';
@@ -32,13 +34,15 @@ import { Errors } from 'src/common/application/errors/errors.constants';
 @Injectable()
 export class AuthService {
   constructor(
+    private readonly jwtService: JwtService,
     @Inject(UserRepository)
     public readonly userRepository: IUserRepository,
-    @Inject(UserCustomerRepository)
-    public readonly userCustomerRepository: IUserCustomerRepository,
+    @Inject(TokenRepository)
+    public readonly tokenRepository: ITokenRepository,
     @Inject(UserInfoRepository)
     public readonly userInfoRepository: IUserInfoRepository,
-    private readonly jwtService: JwtService,
+    @Inject(UserCustomerRepository)
+    public readonly userCustomerRepository: IUserCustomerRepository,
   ) {}
 
   public async login(login: LoginDto): Promise<IAccessToken> {
@@ -76,9 +80,6 @@ export class AuthService {
   private async generateJwtToken(userID: ID): Promise<IAccessToken> {
     const idToken = uuidv4();
 
-    // TODO: save id token
-    // await this.tokenRepository({userID: ID, accessTokenID: idToken});
-
     const payload: IJwtPayload = {
       userID,
       jti: idToken,
@@ -86,6 +87,8 @@ export class AuthService {
 
     const accessToken = this.jwtService.sign(payload, { expiresIn: '1h' });
     const refreshToken = this.jwtService.sign({ jti: idToken }, { expiresIn: '90m' });
+
+    await this.tokenRepository.createEntity({ userID, id: idToken });
 
     return {
       accessToken,

@@ -32,5 +32,17 @@ export const Errors = {
       message: `Invalid Credentials`,
       httpStatus: HttpStatus.BAD_REQUEST,
     },
+    UserNotExistsOnDB: {
+      errorCode: `AUUNE-1`,
+      message: `Unauthorized`,
+      description: 'Valid Token but user does not exists on db',
+      httpStatus: HttpStatus.UNAUTHORIZED,
+    },
+    TokenExpired: {
+      errorCode: `AUTE-2`,
+      message: `Unauthorized`,
+      description: 'Token not exists on db or it is expired',
+      httpStatus: HttpStatus.UNAUTHORIZED,
+    },
   },
 };
