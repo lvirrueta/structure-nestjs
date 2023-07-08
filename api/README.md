@@ -78,7 +78,10 @@ Nest is [MIT licensed](LICENSE).
 ```bash
 docker run --redis-docker some-redis -p 6379:6379 -d redis
 ```
-
+#### Access Redis CLI
+```bash
+docker exec -it e0c061a5700bfa400f8f24b redis-cli
+```
 ### Postgres
 ```bash
 docker run --name postgres -p 5455:5432 -e POSTGRES_USER=postgres -e POSTGRES_PASSWORD=postgrespw -e POSTGRES_DB=postgres -d postgres
