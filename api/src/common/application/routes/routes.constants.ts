@@ -52,4 +52,14 @@ export const Routes = {
     Update,
     Delete,
   },
+  SSOUserGroup: {
+    ApiTags: `sso user group`,
+    Controller: `sso-user-group`,
+    List,
+    Search,
+    Detail,
+    Create,
+    Update,
+    Delete,
+  },
 };
