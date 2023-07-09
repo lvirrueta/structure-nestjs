@@ -3,7 +3,7 @@ import { Logger } from '@nestjs/common';
 import { Repository, DataSource, EntityTarget, QueryRunner, SelectQueryBuilder } from 'typeorm';
 
 // Utils
-import { ThrowError } from 'src/utils/throwservererror';
+import { ThrowError } from 'src/utils/throw-server-error';
 
 // Interface
 import { ID } from 'src/common/application/types/types.types';

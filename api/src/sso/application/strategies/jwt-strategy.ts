@@ -16,7 +16,7 @@ import { IJwtPayload } from 'src/sso/domain/interface/i-jwt-payload';
 import { IUserStrategy } from 'src/sso/domain/interface/i-user-strategy';
 
 // Constants
-import { ThrowError } from 'src/utils/throwservererror';
+import { ThrowError } from 'src/utils/throw-server-error';
 import { Errors } from 'src/common/application/errors/errors.constants';
 
 @Injectable()

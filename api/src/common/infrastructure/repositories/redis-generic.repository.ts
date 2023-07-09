@@ -3,7 +3,7 @@ import * as redis from 'redis';
 import { Logger } from '@nestjs/common';
 
 // Utils
-import { ThrowError } from 'src/utils/throwservererror';
+import { ThrowError } from 'src/utils/throw-server-error';
 
 // Interface
 import {

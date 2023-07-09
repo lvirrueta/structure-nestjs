@@ -29,7 +29,7 @@ import { LoginDto } from 'src/sso/application/dto/login.dto';
 import { SignupDto } from 'src/sso/application/dto/signup.dto';
 
 // Constants
-import { ThrowError } from 'src/utils/throwservererror';
+import { ThrowError } from 'src/utils/throw-server-error';
 import { Errors } from 'src/common/application/errors/errors.constants';
 
 @Injectable()
