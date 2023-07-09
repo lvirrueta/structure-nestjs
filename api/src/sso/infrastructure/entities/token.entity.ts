@@ -7,7 +7,7 @@ export class TokenEntity implements IToken {
   @PrimaryGeneratedColumn('uuid', { name: 'Token_uuid' })
   id: ID;
 
-  @Column({ name: 'Token_strName', type: 'varchar' })
+  @Column({ name: 'User_uuid', type: 'varchar' })
   userID: ID;
 
   @Column({ name: 'Token_dtmExpireIn', type: 'varchar' })
