@@ -1,4 +1,5 @@
 // Dependencies
+import * as ms from 'ms';
 import * as bcrypt from 'bcrypt';
 import { v4 as uuidv4 } from 'uuid';
 import { JwtService } from '@nestjs/jwt';
@@ -85,10 +86,13 @@ export class AuthService {
       jti: idToken,
     };
 
-    const accessToken = this.jwtService.sign(payload, { expiresIn: '1h' });
-    const refreshToken = this.jwtService.sign({ jti: idToken }, { expiresIn: '90m' });
+    const msTokenExpire = '1h';
+    const msRefreshTokenExpire = '2h';
 
-    await this.tokenRepository.createToken({ userID, id: idToken });
+    const accessToken = this.jwtService.sign(payload, { expiresIn: ms(msTokenExpire) });
+    const refreshToken = this.jwtService.sign({ jti: idToken }, { expiresIn: ms(msRefreshTokenExpire) });
+
+    await this.tokenRepository.createToken({ userID, id: idToken, expiresIn: ms(msTokenExpire) });
 
     return {
       accessToken,

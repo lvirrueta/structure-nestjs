@@ -10,6 +10,9 @@ export class TokenEntity implements IToken {
   @Column({ name: 'Token_strName', type: 'varchar' })
   userID: ID;
 
+  @Column({ name: 'Token_dtmExpireIn', type: 'varchar' })
+  expiresIn: number;
+
   @CreateDateColumn({ name: 'Token_dtmCreatedAt' })
   createdAt: string;
 }

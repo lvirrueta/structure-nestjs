@@ -4,6 +4,7 @@ import { TokenEntity } from 'src/sso/infrastructure/entities/token.entity';
 export interface IToken {
   id: ID;
   userID: ID;
+  expiresIn: number;
   createdAt: string;
 }
 
