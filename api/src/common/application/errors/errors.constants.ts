@@ -25,6 +25,16 @@ export const Errors = {
     },
   },
 
+  /** Redis Generic */
+  RedisGenericRepository: {
+    NoConnection: {
+      errorCode: `RGRNC-0`,
+      message: `Connection fail`,
+      httpStatus: HttpStatus.BAD_REQUEST,
+      description: 'Redis connection fail',
+    },
+  },
+
   /** Auth Errors */
   Auth: {
     InvalidCredentials: {
