@@ -16,6 +16,6 @@ export class UserGroupApi implements IUserGroup {
   @ApiProperty()
   hierarchy: number;
 
-  @ApiProperty()
+  @ApiProperty({ enum: UserTypeEnum })
   scope: UserTypeEnum;
 }
