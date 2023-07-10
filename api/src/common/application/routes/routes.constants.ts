@@ -62,4 +62,14 @@ export const Routes = {
     Update,
     Delete,
   },
+  SSORole: {
+    ApiTags: `sso role`,
+    Controller: `sso-role`,
+    List,
+    Search,
+    Detail,
+    Create,
+    Update,
+    Delete,
+  },
 };
