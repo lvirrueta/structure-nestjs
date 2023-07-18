@@ -5,8 +5,7 @@ import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
 import { IUserGroup } from 'src/sso/domain/models/user-group.model';
 
 // Types
-import { ID } from 'src/common/application/types/types.types';
-import { UserTypeEnum } from 'src/sso/domain/enum/user.enum';
+import { ID, ScopeUser } from 'src/common/application/types/types.types';
 
 @Entity({ name: 'tblUserGroups' })
 export class UserGroupEntity implements IUserGroup {
@@ -22,6 +21,6 @@ export class UserGroupEntity implements IUserGroup {
   @Column({ name: 'UserGroup_intHierarchy' })
   hierarchy: number;
 
-  @Column({ name: 'UserGroup_enumScope', enum: UserTypeEnum, enumName: 'UserGroup_enumScope' })
-  scope: UserTypeEnum;
+  @Column({ name: 'UserGroup_enumScope' })
+  scope: ScopeUser;
 }

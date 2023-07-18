@@ -1,6 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { ID } from 'src/common/application/types/types.types';
-import { UserTypeEnum } from 'src/sso/domain/enum/user.enum';
+import { ID, ScopeUser } from 'src/common/application/types/types.types';
 import { IUserGroup } from 'src/sso/domain/models/user-group.model';
 
 export class UserGroupApi implements IUserGroup {
@@ -16,6 +15,6 @@ export class UserGroupApi implements IUserGroup {
   @ApiProperty()
   hierarchy: number;
 
-  @ApiProperty({ enum: UserTypeEnum })
-  scope: UserTypeEnum;
+  @ApiProperty()
+  scope: ScopeUser;
 }
