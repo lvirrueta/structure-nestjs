@@ -1,5 +1,5 @@
 // Dependencies
-import { Column, Entity, JoinColumn, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
+import { Column, Entity, JoinColumn, ManyToOne, PrimaryGeneratedColumn, Unique } from 'typeorm';
 
 // Interface
 import { IUserGroupRole } from 'src/sso/domain/models/user-group-role.model';
@@ -16,6 +16,7 @@ import { UserGroup } from 'src/sso/domain/models/user-group.model';
 import { ID } from 'src/common/application/types/types.types';
 
 @Entity({ name: 'tblUserGroup_Roles' })
+@Unique(['userGroupID', 'roleID'])
 export class UserGroupRoleEntity implements IUserGroupRole {
   @PrimaryGeneratedColumn('uuid', { name: 'UserGroupRole_uuid' })
   id: ID;
