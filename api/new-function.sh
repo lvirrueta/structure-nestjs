@@ -9,14 +9,14 @@ nest g cl $newF/application/dto/create-$newF.dto --flat --no-spec
 nest g cl $newF/application/dto/update-$newF.dto --flat --no-spec
 mkdir src/$newF/application/controller
 nest g co $newF/application/controller/$newF --flat --no-spec
-mkdir src/$newF/application/model
-nest g cl $newF/application/model/$newF-api --flat --no-spec
+mkdir src/$newF/application/swagger
+nest g cl $newF/application/swagger/$newF-api --flat --no-spec
 
 mkdir src/$newF/domain
 mkdir src/$newF/domain/service
 nest g s $newF/domain/service/$newF --flat --no-spec
-mkdir src/$newF/domain/ientities
-nest g itf $newF/domain/ientities/i-$newF --flat
+mkdir src/$newF/domain/models
+nest g cl $newF/domain/models/$newF.model --flat --no-spec
 mkdir src/$newF/domain/irepositories
 nest g itf $newF/domain/irepositories/i-$newF.repository --flat
 
