@@ -8,7 +8,7 @@ export class RoleEntity implements IRole {
   @PrimaryGeneratedColumn('uuid', { name: 'Role_uuid' })
   id: ID;
 
-  @Column({ name: 'Role_strName' })
+  @Column({ name: 'Role_strName', unique: true })
   name: string;
 
   @Column({ name: 'Role_strDescription' })
