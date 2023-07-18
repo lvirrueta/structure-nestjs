@@ -1,6 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { ID } from 'src/common/application/types/types.types';
-import { UserTypeEnum } from 'src/sso/domain/enum/user.enum';
+import { ID, ScopeUser } from 'src/common/application/types/types.types';
 import { IRole } from 'src/sso/domain/models/role.model';
 
 export class RoleApi implements IRole {
@@ -13,8 +12,8 @@ export class RoleApi implements IRole {
   @ApiProperty()
   description: string;
 
-  @ApiProperty({ enum: UserTypeEnum })
-  scope: UserTypeEnum;
+  @ApiProperty()
+  scope: ScopeUser;
 
   @ApiProperty()
   hierarchy: number;

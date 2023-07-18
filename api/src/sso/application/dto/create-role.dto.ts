@@ -1,8 +1,8 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { IsEnum, IsInt, IsString } from 'class-validator';
-import { UserTypeEnum } from 'src/sso/domain/enum/user.enum';
+import { IsInt, IsString, Matches } from 'class-validator';
+import { Regex } from 'src/common/application/regex/regex.constants';
+import { ScopeUser } from 'src/common/application/types/types.types';
 import { IRole } from 'src/sso/domain/models/role.model';
-import { getOptionsFromEnum } from 'src/utils/getOptionsFromEnum';
 
 /** Keys To Omit */
 type OmitKeys = Pick<IRole, 'id'>;
@@ -21,7 +21,7 @@ export class CreateRoleDto implements IRoleOmit {
   @IsInt()
   hierarchy: number;
 
-  @ApiProperty({ description: 'scope of role', example: UserTypeEnum.ADMIN, enum: { UserTypeEnum } })
-  @IsEnum(UserTypeEnum, { message: `valid options for scope: ${getOptionsFromEnum(UserTypeEnum)}` })
-  scope: UserTypeEnum;
+  @ApiProperty({ description: 'scope of role', example: 'A' })
+  @Matches(Regex.AOC, { message: `scope only accepts values: 'A', 'O', 'C'` })
+  scope: ScopeUser;
 }
