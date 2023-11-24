@@ -24,21 +24,21 @@
 
 ## Description
 <p>
-Este repositorio es un estructura inicial para iniciar un proyecto con la arquitectura DDD, contiene implementaciones genericas para evitar el codigo repetido, como un repositorio generico, un servicio generico, y un controlador generico.
+Este repositorio es un estructura inicial para iniciar un proyecto con la arquitectura DDD, contiene implementaciones genéricas para evitar el código repetido, como un repositorio genérico, un servicio genérico, y un controlador genérico.
 <br>
-El controlador generico contiente metodos crud, los cuales en el constructor los puedes asociar al servicio generico o a un servicio en especial.
+El controlador genérico contiene métodos crud, los cuales en el constructor los puedes asociar al servicio genérico o a un servicio en especial.
 <br>
-El servicio generico asocia los metodos del controlador generico, al repositorio generico, en el constructor se puede asociar un repositorio en especial o al repositorio generico
+El servicio genérico asocia los métodos del controlador genérico, al repositorio genérico, en el constructor se puede asociar un repositorio en especial o al repositorio genérico
 <br>
-El repositorio generico extiende de la clase repository, propia de typeorm, contiene metodos para hacer un crud, tambien contiene metodos para realizar transacciones de forma generica.
+El repositorio genérico extiende de la clase repository, propia de typeorm, contiene métodos para hacer un crud, también contiene métodos para realizar transacciones de forma genérica.
 <br>
 El script new-functionality, genera toda la estructura de carpetas para dar inicio a una nueva funcionalidad para el proyecto
 <br>
-El proyecto ya cuenta con una base de sso, el cual consiste en un solo inicio de sesion a diferentes plataformas, cuenta con la creacion de grupos de usuario, roles, y usuarios. Cada usuario peretenece a un grupo de usuarios. Y cada rol se asocia a un grupo de usuario
+El proyecto ya cuenta con una base de sso, el cual consiste en un solo inicio de sesión a diferentes plataformas, cuenta con la creación de grupos de usuario, roles, y usuarios. Cada usuario pertenece a un grupo de usuarios. Y cada rol se asocia a un grupo de usuario
 <br>
 El proyecto cuenta con swagger el cual es una herramienta para documentar la api, se puede acceder desde -> localhost:3000/api
 <br>
-Tambien cuenta con un diccionario de erroes. Y con una implementacion para lanzar los errores de una manera mas sencilla, el archivo con el diccionario de erroes -> "error.constant.ts" y el metodo para lanzar los errores -> "throw-server-error.ts"
+También cuenta con un diccionario de errores. Y con una implementación para lanzar los errores de una manera mas sencilla, el archivo con el diccionario de errores -> "error.constant.ts" y el método para lanzar los errores -> "throw-server-error.ts"
 </p>
 
 ## Installation
