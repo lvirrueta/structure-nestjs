@@ -23,8 +23,11 @@
   [![Sponsors on Open Collective](https://opencollective.com/nest/sponsors/badge.svg)](https://opencollective.com/nest#sponsor)-->
 
 ## Description
-
-[Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
+<p>
+This repository is a structure to start a new project with the DDD architecture, this structure contains a generic repository that helps to avoid repeated code.
+This structure starts with a sso implementation. To add new features, use the bash script "new-function.sh"
+It also has swagger -> localhost:3000/api
+</p>
 
 ## Installation
 
