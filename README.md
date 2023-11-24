@@ -24,9 +24,21 @@
 
 ## Description
 <p>
-This repository is a structure to start a new project with the DDD architecture, this structure contains a generic repository that helps to avoid repeated code.
-This structure starts with a sso implementation. To add new features, use the bash script "new-function.sh"
-It also has swagger -> localhost:3000/api
+Este repositorio es un estructura inicial para iniciar un proyecto con la arquitectura DDD, contiene implementaciones genericas para evitar el codigo repetido, como un repositorio generico, un servicio generico, y un controlador generico.
+<br>
+El controlador generico contiente metodos crud, los cuales en el constructor los puedes asociar al servicio generico o a un servicio en especial.
+<br>
+El servicio generico asocia los metodos del controlador generico, al repositorio generico, en el constructor se puede asociar un repositorio en especial o al repositorio generico
+<br>
+El repositorio generico extiende de la clase repository, propia de typeorm, contiene metodos para hacer un crud, tambien contiene metodos para realizar transacciones de forma generica.
+<br>
+El script new-functionality, genera toda la estructura de carpetas para dar inicio a una nueva funcionalidad para el proyecto
+<br>
+El proyecto ya cuenta con una base de sso, el cual consiste en un solo inicio de sesion a diferentes plataformas, cuenta con la creacion de grupos de usuario, roles, y usuarios. Cada usuario peretenece a un grupo de usuarios. Y cada rol se asocia a un grupo de usuario
+<br>
+El proyecto cuenta con swagger el cual es una herramienta para documentar la api, se puede acceder desde -> localhost:3000/api
+<br>
+Tambien cuenta con un diccionario de erroes. Y con una implementacion para lanzar los errores de una manera mas sencilla, el archivo con el diccionario de erroes -> "error.constant.ts" y el metodo para lanzar los errores -> "throw-server-error.ts"
 </p>
 
 ## Installation
